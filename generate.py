@@ -1,4 +1,7 @@
 import argparse
+from train import TextModel
+import pickle
+import os
 
 parser = argparse.ArgumentParser()
 
@@ -13,4 +16,10 @@ parser.add_argument('--length',
                     help='Длина генерируемой последовательности. (default: 10)')
 
 args = parser.parse_args()
-print(args.model)
+
+with open(os.path.join(args.model), 'rb') as load_path:
+    model = TextModel()
+    model.load_weights(pickle.load(load_path))
+
+print(model.generate(args.length, args.prefix))
+
